@@ -1,12 +1,12 @@
 from scipy.spatial import ConvexHull
 import torch
 import yaml
-from modules.keypoint_detector import KPDetector
-from modules.generator_optim import OcclusionAwareGenerator
-from sync_batchnorm import DataParallelWithCallback
+from fomm.modules.keypoint_detector import KPDetector
+from fomm.modules.generator_optim import OcclusionAwareGenerator
+from fomm.sync_batchnorm import DataParallelWithCallback
 import numpy as np
 import face_alignment
-from animate import normalize_kp
+from fomm.animate import normalize_kp
 
 
 def to_tensor(a):

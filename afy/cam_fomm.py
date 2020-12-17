@@ -68,7 +68,7 @@ def load_stylegan_avatar():
 def load_images(IMG_SIZE = 256):
     avatars = []
     filenames = []
-    images_list = sorted(glob.glob(f'{opt.avatars}/*'))
+    images_list = sorted(glob.glob('{}/*'.format(opt.avatars)))
     for i, f in enumerate(images_list):
         if f.endswith('.jpg') or f.endswith('.jpeg') or f.endswith('.png'):
             img = cv2.imread(f)
@@ -103,7 +103,7 @@ def print_help():
     for i, fname in enumerate(avatar_names):
         key = i + 1
         name = fname.split('/')[-1]
-        info(f'{key}: {name}')
+        info('{}: {}'.format(key,name))
     info('W: Zoom camera in')
     info('S: Zoom camera out')
     info('A: Previous avatar in folder')
@@ -118,10 +118,10 @@ def print_help():
 
 def draw_fps(frame, fps, timing, x0=10, y0=20, ystep=30, fontsz=0.5, color=(255, 255, 255)):
     frame = frame.copy()
-    cv2.putText(frame, f"FPS: {fps:.1f}", (x0, y0 + ystep * 0), 0, fontsz * IMG_SIZE / 256, color, 1)
-    cv2.putText(frame, f"Model time (ms): {timing['predict']:.1f}", (x0, y0 + ystep * 1), 0, fontsz * IMG_SIZE / 256, color, 1)
-    cv2.putText(frame, f"Preproc time (ms): {timing['preproc']:.1f}", (x0, y0 + ystep * 2), 0, fontsz * IMG_SIZE / 256, color, 1)
-    cv2.putText(frame, f"Postproc time (ms): {timing['postproc']:.1f}", (x0, y0 + ystep * 3), 0, fontsz * IMG_SIZE / 256, color, 1)
+    cv2.putText(frame, "FPS: {.1f}".format(fps), (x0, y0 + ystep * 0), 0, fontsz * IMG_SIZE / 256, color, 1)
+    cv2.putText(frame, "Model time (ms): {.1f}".format(timing['predict']), (x0, y0 + ystep * 1), 0, fontsz * IMG_SIZE / 256, color, 1)
+    cv2.putText(frame, "Preproc time (ms): {.1f}".format(timing['preproc']), (x0, y0 + ystep * 2), 0, fontsz * IMG_SIZE / 256, color, 1)
+    cv2.putText(frame, "Postproc time (ms): {.1f}".format(timing['postproc']), (x0, y0 + ystep * 3), 0, fontsz * IMG_SIZE / 256, color, 1)
     return frame
 
 
@@ -150,7 +150,7 @@ def select_camera(config):
                 cam_id = list(cam_frames)[0]
             else:
                 cam_id = cam_selector.select_camera(cam_frames, window="CLICK ON YOUR CAMERA")
-            log(f"Selected camera {cam_id}")
+            log("Selected camera {}".format(cam_id))
 
             with open(cam_config, 'w') as f:
                 yaml.dump({'cam_id': cam_id}, f)
@@ -220,8 +220,8 @@ if __name__ == "__main__":
             except ImportError:
                 log("pyfakewebcam is not installed.")
                 exit(1)
-
-            stream = pyfakewebcam.FakeWebcam(f'/dev/video{opt.virt_cam}', *stream_img_size)
+            print('video cam', '/dev/video{}'.format(opt.virt_cam))
+            stream = pyfakewebcam.FakeWebcam('/dev/video{}'.format(opt.virt_cam), *stream_img_size)
         else:
             enable_vcam = False
             # log("Virtual camera is supported only on Linux.")
